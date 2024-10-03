@@ -10,6 +10,7 @@ private:
   bucket_t<K,V> *buff;
 
   std::size_t Hash(K Key);
+  std::size_t resolveHash();
   //make a function here for resolving collisions 
 
 public:

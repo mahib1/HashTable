@@ -4,8 +4,8 @@ Implementing a hashTable from scratch in C++
 ## What to include - 
     - A data structure with key value pairs and a table 
     - Main operation - Insertion, deletion, lookup
-    - Insertion - O(n) 
-    - Deletion - O(n)
+    - Insertion - O(1) 
+    - Deletion - O(1)
     - Lookup - O(log(n)) worst case
 
 
