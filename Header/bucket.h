@@ -1,0 +1,17 @@
+#pragma once
+
+/*
+ * This is the Bucket type definition 
+*/
+
+#include <iostream>
+
+template<typename K, typename V>
+struct bucket_t {
+  K name;
+  V value;
+  std::size_t hashIdx;
+  
+  bucket_t(K key, V val, std::size_t idx) : name(key), value(val), hashIdx(idx){};
+};
+
