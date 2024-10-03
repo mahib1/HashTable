@@ -20,5 +20,6 @@ public:
 
   void insert(K key, V val); 
   void erase(K key, V val); 
-  std::optional<V> find(K key);
+  std::optional<V> fetch(K key);
+  bool find(K key);
 };
