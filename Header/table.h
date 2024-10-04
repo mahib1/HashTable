@@ -4,6 +4,7 @@
 #include <optional>
 #include <sys/types.h>
 
+
 template<typename K, typename V>
 class HashTable {
 private:
@@ -21,7 +22,7 @@ private:
   template<typename U>
   std::size_t Hash(U* Key); //done
   std::size_t resolveHash(K key, std::size_t _idx); // where probing and chaining comes in
-  std::unique_ptr<bucket_t<K, V>> toBucket(K key, V val);
+  std::unique_ptr<bucket_t<K,V>> toBucket(K key, V val);
   void resize();
   //make a function here for resolving collisions 
 
@@ -35,6 +36,6 @@ public:
 
   void insert(K key, V val); //doing 
   void erase(K key, V val); 
-  std::optional<V> fetch(K key);
+  HashTable* fetch(K key);
   bool find(K key);
 };
