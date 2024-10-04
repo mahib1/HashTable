@@ -20,7 +20,7 @@ std::size_t HashTable<K,V>::Hash(std::string key) {
 
 template <typename K, typename V>
 std::size_t HashTable<K,V>::Hash(bool key) {
-  return key;
+  return key % _capacity;
 }
 
 

@@ -8,7 +8,7 @@ template<typename K, typename V>
 class HashTable {
 private:
   std::size_t _size; 
-  bucket_t<K,V> *_buff;
+  bucket_t<K,V>** _buff;
   std::size_t _capacity;
 
   std::size_t Hash(int key); //done
@@ -20,7 +20,7 @@ private:
   
   template<typename U>
   std::size_t Hash(U* Key); //done
-  std::size_t resolveHash(); // where probing and chaining comes in
+  std::size_t resolveHash(K key, std::size_t _idx); // where probing and chaining comes in
   std::unique_ptr<bucket_t<K, V>> toBucket(K key, V val);
   void resize();
   //make a function here for resolving collisions 
