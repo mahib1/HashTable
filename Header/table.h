@@ -21,17 +21,19 @@ private:
   template<typename U>
   std::size_t Hash(U* Key); //done
   std::size_t resolveHash(); // where probing and chaining comes in
+  std::unique_ptr<bucket_t<K, V>> toBucket(K key, V val);
+  void resize();
   //make a function here for resolving collisions 
 
 public:
   HashTable(std::vector<V> &arr);
-  HashTable();
+  HashTable(); //done
 
   template<typename C>
   HashTable(C cons, std::function<std::pair<K, V>(C)> *debug); //constructor for any data type
   ~HashTable(); 
 
-  void insert(K key, V val); 
+  void insert(K key, V val); //doing 
   void erase(K key, V val); 
   std::optional<V> fetch(K key);
   bool find(K key);

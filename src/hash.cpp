@@ -51,5 +51,8 @@ std::size_t HashTable<K,V>::Hash(char* key) {
 template <typename K, typename V>
 template <typename U>
 std::size_t HashTable<K,V>::Hash(U* key) {
-  return reinterpret_cast<std::size_t>(key) % _capacity;
+  std::size_t address = reinterpret_cast<std::size_t>(key) % _capacity;
+  address ^= (address >> 16);
+
+  return address % _capacity;
 }
