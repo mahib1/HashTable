@@ -11,7 +11,11 @@ struct bucket_t {
   K name;
   V value;
   std::size_t hashIdx;
+  bucket_t<K,V>* next;
   
   bucket_t(K key, V val, std::size_t idx) : name(key), value(val), hashIdx(idx){};
+  void add(bucket_t &bucket_2) {
+    this.next = bucket_2;
+  };
 };
 

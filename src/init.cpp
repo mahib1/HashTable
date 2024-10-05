@@ -27,12 +27,6 @@ HashTable<K,V>::HashTable(std::vector<V> &arr) {
 
 
 template <typename K, typename V>
-HashTable<K,V>* HashTable<K,V>::fetch(K key) {  
-  
-}
-
-
-template <typename K, typename V>
 void HashTable<K,V>::resize() {
   //Nisheeeeeeeeeeta here you go
   """This Function resizes the HashTable:""";
