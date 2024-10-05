@@ -1,8 +1,8 @@
 #include "../Header/table.h"
 
 template <typename K, typename V>
-std::unique_ptr<bucket_t<K,V>> HashTable<K,V>::toBucket(K &key, V &val) {
-  std::unique_ptr<bucket_t<K,V>> _new (new bucket_t<K, V>(key, val, HashTable::Hash(key)));
+bucket_t<K,V>* HashTable<K,V>::toBucket(K &key, V &val) {
+  bucket_t<K,V>* _new = new bucket_t<K, V>(key, val, HashTable::Hash(key));
   return _new;
 }
 
@@ -10,21 +10,27 @@ std::unique_ptr<bucket_t<K,V>> HashTable<K,V>::toBucket(K &key, V &val) {
 template <typename K, typename V>
 void HashTable<K,V>::insert(K &key, V &val) {
 
-  std::unique_ptr<bucket_t<K,V>> _new = HashTable::toBucket(key, val);
+  bucket_t<K,V>* _new = HashTable::toBucket(key, val);
 
-  if(_size >= _capacity) {
+  if(_size >= _capacity/2) {
     HashTable::resize(); 
   }
 
   std::size_t _idx = HashTable::Hash(key);
+  int attempt = 0;
 
-  if(_buff[_idx] != nullptr) {
-    HashTable::resolveHash(key, _idx);
+  while(_buff[_idx] != nullptr && _buff[_idx] -> key != key) {
+    attempt++;
+    _idx = probe(_idx, key, attempt);
   }
-  
 
-  _buff[_idx] = _new;
-  _size++;
+  if(_buff[_idx] == nullptr) {
+    _buff[_idx] = new bucket_t<K,V>(key, val, _idx); 
+    _size++;
+  } else {
+    _buff[_idx] -> value = val;
+  }
+
 }
 
 template <typename K, typename V>
@@ -51,37 +57,51 @@ bucket_t<K,V>* HashTable<K,V>::chainSearch(K &key, std::size_t idx) {
 
 }
 
-//this function may/may not work as of now
-template <typename K, typename V>
-bucket_t<K,V>* HashTable<K,V>::changeIdxSearch(K &key, std::size_t idx) {
-  std::size_t _newIdx = HashTable::probe(idx);
-
-  if(_buff[_newIdx] == nullptr) {
-    return nullptr; 
-  }
-
-  while(_buff[_newIdx] != nullptr) {
-    bucket_t<K,V>* temp = chainSearch(key, _newIdx); 
-    if(temp != nullptr) return temp;
-
-    _newIdx = HashTable::probe(_newIdx);
-  }
-
-  return nullptr;
-}
 
 template <typename K, typename V>
 bucket_t<K,V>* HashTable<K,V>::fetch(K &key) {  
-  std::size_t idx = HashTable::Hash(key); 
-  bucket_t<K,V>* result = HashTable::chainSearch(key, idx);
-  if(result == nullptr) {
-    bucket_t<K,V>* temp = HashTable::changeIdxSearch(key, idx);
-    if(temp == nullptr) return nullptr;
+  std::size_t _idx = HashTable::Hash(key); 
+  int attempt = 0;
+  
+  while(_buff[_idx] != nullptr || chainSearch(key, _idx) != nullptr) {
+    attempt ++;
+    _idx = HashTable::probe(_idx, key, attempt);
+  } 
 
-    return temp;
+  if(_buff[_idx] == nullptr) {
+    return nullptr;
+  } else {
+    return chainSearch(key, _idx);
   }
-
-  return nullptr;
 }
 
+template <typename K, typename V>
+V* HashTable<K,V>::get(K& key) {
+  bucket_t<K,V>* _res = HashTable::fetch(key);
+  if(_res == nullptr) return nullptr; 
+
+  return (_res -> value);
+}
+
+template <typename K, typename V>
+bool HashTable<K,V>::find(K& key) {
+  bucket_t _res = HashTable::fetch(key); 
+  if(_res == nullptr) return false;
+
+  return true;
+}
+
+
+template <typename K, typename V>
+void HashTable<K,V>::debug() {
+  for(int i = 0; i < _capacity ; i++) {
+    if(_buff[i] == nullptr) continue; 
+    
+    bucket_t<K,V>* temp = _buff[i]; 
+    while(temp != nullptr) { 
+      std::cout << "key : " << temp -> key << ", value : " << temp -> val << std::endl;
+      temp = temp -> next;
+    }
+  } 
+}
 
