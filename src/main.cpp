@@ -1,6 +1,9 @@
 #include <iostream>
 #include "../Header/table.h"
 
+//workin - find, get, insert, erase, debug, fetch, destructors, array constructor, normal constructor
+//test - custom constructors, idk
+
 int main() {
   HashTable<int, std::string> myHash;
 
@@ -18,6 +21,9 @@ int main() {
 
   std::cout << myHash.find(4) << std::endl;
   std::cout << *(myHash.get(4)) << std::endl;
+
+  myHash2.erase(0); 
+  myHash2.debug();
   return 0;
 
 }

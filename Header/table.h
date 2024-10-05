@@ -54,7 +54,7 @@ public:
     ~HashTable();
 
     void insert(const K& key, const V& val);
-    void erase(const K& key, const V& val);
+    void erase(const K& key);
     bool find(const K& key);
     V* get(const K& key);
     void debug();
@@ -118,6 +118,30 @@ void HashTable<K, V>::insert(const K& key, const V& val) {
         temp->add(newBucket);
     }
     _size++;
+}
+
+template <typename K, typename V>
+void HashTable<K, V>::erase(const K& key) {
+    std::size_t idx = Hash(key);
+    bucket_t<K, V>* current = _buff[idx];
+    bucket_t<K, V>* previous = nullptr;
+
+    while (current != nullptr) {
+        if (current->name == key) {
+            if (previous == nullptr) {
+                _buff[idx] = current->next; // Move the head of the list
+            } else {
+                previous->next = current->next;
+            }
+
+            delete current;
+
+            _size--;
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
 }
 
 template <typename K, typename V>
