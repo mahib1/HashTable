@@ -1,16 +1,13 @@
 // constructors and destructors
 
 #include "../Header/table.h"
-#include <cstddef>
-#include <cstdlib>
-#include <memory>
 
 template <typename K, typename V>
 HashTable<K,V>::HashTable() {
   //initialize an empty hashTable;
   _size = 0; 
   _capacity = 0; 
-  _buff = std::nullptr_t();
+  _buff = nullptr;
 }
 
 
